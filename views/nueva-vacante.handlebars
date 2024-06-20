@@ -1,5 +1,5 @@
 <main class="contenedor">
-    <form action="POST" class="default-form">
+    <form method="POST"  action="/vacantes/nueva" class="default-form" >
         <h3>Información general</h3>
         <div class="campo">
             <label for="">Titulo</label>
@@ -11,11 +11,11 @@
         </div>
         <div class="campo">
             <label for="">Ubicación</label>
-            <input type="text" name="titulo" placeholder="Ej: México/Remoto" required>
+            <input type="text" name="ubicacion" placeholder="Ej: México/Remoto" required>
         </div>
         <div class="campo">
             <label for="">Salario</label>
-            <input type="text" name="titulo" placeholder="Ej: $500 USD" required>
+            <input type="text" name="salario" placeholder="Ej: $500 USD" required>
         </div>
         <div class="campo">
             <label>Contrato</label>
@@ -41,6 +41,7 @@
         </ul>
 
         <div class="campo centrar-horizontal">
+            <input type="hidden" name="skills" id="skills">
             <input type="submit" value="Publicar" class="btn btn-azul">
         </div>
     </form>
