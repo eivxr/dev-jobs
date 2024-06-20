@@ -9,33 +9,46 @@ const router = require("./routes/index");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
 require("dotenv").config({ path: "variables.env" });
 const app = express();
 
-//habilitar body parser para la lectura de campos en formularios
+// Habilitar body parser para la lectura de campos en formularios
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}))
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Habilitar handlebars como template engine
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" , helpers: require('./helpers/handlebars.js')}));
+const helpers = require("./helpers/handlebars.js");
+
+app.engine(
+  "handlebars",
+  exphbs.engine({
+    defaultLayout: "main",
+    helpers: helpers,
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
+  })
+);
 
 app.set("view engine", "handlebars");
 
 // Archivos estáticos (hojas de estilo, JavaScript, imágenes, etc.)
 app.use(express.static(path.join(__dirname, "public")));
 
-//DB session
+// DB session
+app.use(cookieParser());
+
 app.use(
   session({
     secret: process.env.SECRETO,
     key: process.env.KEY,
     saveUninitialized: false,
     resave: false,
-    store: new MongoStore({
-      mongoUrl: process.env.DATABASE, 
+    store: MongoStore.create({
+      mongoUrl: process.env.DATABASE,
       mongooseConnection: mongoose.connection,
     }),
   })
