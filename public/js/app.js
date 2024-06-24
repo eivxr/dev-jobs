@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (skills) {
     skills.addEventListener("click", agregarSkills);
+
+    //llamar a la funcion en editar vacante
+    skillsSeleccionados();
   }
 });
 
@@ -23,5 +26,17 @@ const agregarSkills = (e) => {
     }
   }
   const skillsArray = [...skills];
-  document.querySelector("#skills").value = skillsArray
+  document.querySelector("#skills").value = skillsArray;
+};
+
+const skillsSeleccionados = () => {
+  // recuperamos la lista de habilidades del html
+  const seleccionados = Array.from(
+    document.querySelectorAll(".lista-conocimientos .activo")
+  );
+
+  seleccionados.forEach((seleccionada) => skills.add(seleccionada.textContent));
+  //inyeccion de contenido en el input hidden
+  const skillsArray = [...skills];
+  document.querySelector("#skills").value = skillsArray;
 };

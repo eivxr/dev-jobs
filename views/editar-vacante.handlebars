@@ -1,0 +1,51 @@
+<main class="contenedor">
+    <form method="POST"  action="/vacantes/editar/{{vacante.url}}" class="default-form" >
+        <h3>Información general</h3>
+        <div class="campo">
+            <label for="">Titulo</label>
+            <input type="text" name="titulo" placeholder="Ej: Desarrollador MERN Stack" required value="{{vacante.titulo}}">
+        </div>
+        <div class="campo">
+            <label for="">Empresa</label>
+            <input type="text" name="empresa" placeholder="Empresa que contrata" required value="{{vacante.empresa}}">
+        </div>
+        <div class="campo">
+            <label for="">Ubicación</label>
+            <input type="text" name="ubicacion" placeholder="Ej: México/Remoto" required value="{{vacante.ubicacion}}">
+        </div>
+        <div class="campo">
+            <label for="">Salario</label>
+            <input type="text" name="salario" placeholder="Ej: $500 USD" required value="{{vacante.salario}}">
+        </div>
+        <div class="campo">
+            <label>Contrato</label>
+            <select name="contrato">
+                {{#tipoContrato vacante.contrato}}
+                <option value="" selected disabled>--Seleccione--</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Tiempo completo">Tiempo completo</option>
+                <option value="Medio tiempo">Medio tiempo</option>
+                <option value="Por obra"> Por obra</option>
+                {{/tipoContrato}}
+            </select>
+        </div>
+
+        <h3>Descripción del puesto</h3>
+        <div class="campo descripcion">
+            <label for="">Descripción</label>
+            <input type="hidden" name="descripcion" id="x" value="{{{vacante.descripcion}}}">
+            <trix-editor input="x"></trix-editor>
+        </div>
+
+        <ul class="lista-conocimientos">
+            {{#seleccionarSkills vacante.skills}}
+            {{/seleccionarSkills}}
+        </ul>
+
+        <div class="campo centrar-horizontal">
+            <input type="hidden" name="skills" id="skills">
+            <input type="submit" value="Guardar cambios" class="btn btn-azul">
+        </div>
+    </form>
+
+</main>

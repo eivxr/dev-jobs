@@ -27,6 +27,35 @@ exports.mostrarVacante = async (req, res, next) => {
   res.render("vacante", {
     vacante,
     barra: true,
-    nombrePagina: vacante.titulo
+    nombrePagina: vacante.titulo,
   });
+};
+
+exports.formEditarVacante = async (req, res, next) => {
+  const vacante = await Vacante.findOne({ url: req.params.url });
+
+  if (!vacante) return next();
+
+  res.render("editar-vacante", {
+    nombrePagina: `Editar - ${vacante.titulo}`,
+    vacante,
+  });
+};
+
+exports.editarVacante = async (req, res) => {
+  const vacanteActualizada = req.body;
+  vacanteActualizada.skills = req.body.skills.split(",");
+  console.log(vacanteActualizada);
+
+  //actualizacion de la vacante en la base de datos
+  const vacante = await Vacante.findOneAndUpdate(
+    { url: req.params.url }, //encontramos la vacante
+    vacanteActualizada, // el objeto por el que vamos a actualizar
+    { //configuracion para la actualizacion
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.redirect(`/vacantes/${vacante.url}`)
 };
