@@ -34,4 +34,12 @@ usuarioSchema.pre("save", async function (next) {
   next();
 });
 
+usuarioSchema.post("save", function (error, doc, next) {
+  if (error.name === "MongoServerError" && error.code === 11000) {
+    next("Ese usuario ya ha sido registrado");
+  } else {
+    next(error);
+  }
+});
+
 module.exports = mongoose.model("Usuarios", usuarioSchema);

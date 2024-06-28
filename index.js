@@ -10,6 +10,8 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
+const expressValidator = require("express-validator");
+const flash = require("connect-flash");
 
 require("dotenv").config({ path: "variables.env" });
 const app = express();
@@ -38,6 +40,9 @@ app.set("view engine", "handlebars");
 // Archivos estáticos (hojas de estilo, JavaScript, imágenes, etc.)
 app.use(express.static(path.join(__dirname, "public")));
 
+//validacion de campos
+app.use(expressValidator());
+
 // DB session
 app.use(cookieParser());
 
@@ -54,8 +59,15 @@ app.use(
   })
 );
 
+//alertas y mensajes de tipo flash y creacion del middleware
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.mensajes = req.flash();
+  next();
+});
+
 app.use("/", router());
 
 app.listen(process.env.PUERTO, () => {
-  console.log("Servidor iniciado en http://localhost:5000");
+  console.log("Servidor iniciado en http://localhost:5001");
 });

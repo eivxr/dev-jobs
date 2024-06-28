@@ -60,4 +60,4 @@ vacantesSchema.pre('save', function(next) {
 vacantesSchema.index({ titulo : 'text' });
 
 
-module.exports = mongoose.model('Vacante', vacantesSchema);
+module.exports = mongoose.model('Vacantes', vacantesSchema);
