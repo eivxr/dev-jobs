@@ -44,7 +44,7 @@ module.exports = {
   },
 
   tipoContrato: (seleccionado, opciones) => {
-    console.log(seleccionado);
+
 
     return opciones
       .fn(this)

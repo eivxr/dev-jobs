@@ -10,6 +10,9 @@ exports.formularioNuevaVacante = (req, res) => {
 
 exports.agregarVacante = async (req, res) => {
   const vacante = new Vacante(req.body);
+
+  vacante.autor = req.user._id;
+
   vacante.skills = req.body.skills.split(","); //creamos un arreglo usando el objeto de skills
 
   //almacenamos en la base de datos
@@ -45,17 +48,18 @@ exports.formEditarVacante = async (req, res, next) => {
 exports.editarVacante = async (req, res) => {
   const vacanteActualizada = req.body;
   vacanteActualizada.skills = req.body.skills.split(",");
-  console.log(vacanteActualizada);
+
 
   //actualizacion de la vacante en la base de datos
   const vacante = await Vacante.findOneAndUpdate(
     { url: req.params.url }, //encontramos la vacante
     vacanteActualizada, // el objeto por el que vamos a actualizar
-    { //configuracion para la actualizacion
+    {
+      //configuracion para la actualizacion
       new: true,
       runValidators: true,
     }
   );
 
-  res.redirect(`/vacantes/${vacante.url}`)
+  res.redirect(`/vacantes/${vacante.url}`);
 };
