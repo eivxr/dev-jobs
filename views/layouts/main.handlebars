@@ -30,6 +30,15 @@
             </form>
         </div>
         {{/if}}
+
+        {{#if cerrarSesion}}
+             <div class="cerrar-sesion">
+                 <p>Hola, {{nombre}}</p>
+                 <a href="/administracion">Panel de administración</a>
+                 <a href="/cerrar-sesion"> Cerrar sesión</a>
+             </div>
+        {{/if}}
+
     </div>
 
     <header class="site-header contenedor separador">
@@ -46,16 +55,16 @@
 
     <div class="contenido-principal contenedor">
         {{#if mensajes}}
-            <div class="alertas">
-                {{#mostrarAlertas mensajes}}
-                {{/mostrarAlertas}}
-            </div>
+        <div class="alertas">
+            {{#mostrarAlertas mensajes}}
+            {{/mostrarAlertas}}
+        </div>
         {{/if}}
         {{{body}}}
     </div>
 
 
-    <script  src="/dist/bundle.js"></script>
+    <script src="/dist/bundle.js"></script>
 
 </body>
 

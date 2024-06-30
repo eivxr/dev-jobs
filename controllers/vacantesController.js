@@ -5,6 +5,8 @@ exports.formularioNuevaVacante = (req, res) => {
   res.render("nueva-vacante", {
     nombrePagina: "Nueva vacante",
     tagline: "Llena el formulario para publicar una nueva vacante",
+    nombre: req.user.nombre,
+    cerrarSesion: true,
   });
 };
 
@@ -42,13 +44,14 @@ exports.formEditarVacante = async (req, res, next) => {
   res.render("editar-vacante", {
     nombrePagina: `Editar - ${vacante.titulo}`,
     vacante,
+    nombre: req.user.nombre,
+    cerrarSesion: true,
   });
 };
 
 exports.editarVacante = async (req, res) => {
   const vacanteActualizada = req.body;
   vacanteActualizada.skills = req.body.skills.split(",");
-
 
   //actualizacion de la vacante en la base de datos
   const vacante = await Vacante.findOneAndUpdate(
@@ -63,3 +66,6 @@ exports.editarVacante = async (req, res) => {
 
   res.redirect(`/vacantes/${vacante.url}`);
 };
+
+
+//validacion y sanitizacion des los campos en vacantes
