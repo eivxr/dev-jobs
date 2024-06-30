@@ -61,3 +61,11 @@ exports.crearUsuario = async (req, res, next) => {
     res.redirect("/crear-cuenta");
   }
 };
+
+//iniciar sesion y autenticacion
+
+exports.formIniciarSesion = (req, res, next) => {
+  res.render("iniciar-sesion", {
+    nombrePagina: "Inicia sesión en devJobs",
+  });
+};
