@@ -67,5 +67,48 @@ exports.editarVacante = async (req, res) => {
   res.redirect(`/vacantes/${vacante.url}`);
 };
 
+exports.eliminarVacante = async (req, res) => {
+  const { id } = req.params;
+
+  // const vacante = await Vacante.findById(id);
+
+  res.status(200).send("Vacante Eliminada Correctamente");
+};
 
 //validacion y sanitizacion des los campos en vacantes
+exports.validarVacante = (req, res, next) => {
+  // sanitizacion de los campos enviados en el request
+  req.sanitizeBody("titulo").escape();
+  req.sanitizeBody("empresa").escape();
+  req.sanitizeBody("ubicacion").escape();
+  req.sanitizeBody("salario").escape();
+  req.sanitizeBody("contrato").escape();
+  req.sanitizeBody("skills").escape();
+
+  req.checkBody("nombre", "Agregue un titulo a la vacante").notEmpty();
+  req.checkBody("empresa", "Agregue un nombre de empresa").notEmpty();
+  req.checkBody("ubicacion", "Agregue una ubicación").notEmpty();
+  req.checkBody("contrato", "Seleccione el tipo de contrato").notEmpty();
+  req.checkBody("skills", "Elija al menos una habilidad").notEmpty();
+
+  const errores = req.validationErrors();
+
+  if (errores) {
+    req.flash(
+      "error",
+      errores.map((error) => error.msg)
+    );
+
+    res.render("nueva-vacante", {
+      nombrePagina: "Nueva vacante",
+      tagline: "Llena el formulario para publicar una nueva vacante",
+      nombre: req.user.nombre,
+      cerrarSesion: true,
+      mensajes: req.flash(),
+    });
+
+    return;
+  }
+
+  next();
+};

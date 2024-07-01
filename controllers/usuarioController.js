@@ -106,3 +106,31 @@ exports.cerrarSesionUsuario = (req, res, next) => {
     return res.redirect("/iniciar-sesion");
   });
 };
+
+exports.validarEditarPerfil = (req, res) => {
+  //sanitizar campos
+  req.sanitizeBody("nombre").escape();
+  req.sanitizeBody("nombre").escape();
+  if (req.body.password) {
+    req.sanitizeBody("password").escape();
+  }
+
+  req.checkBody("nombre", "Nombre no puede ir vacío").notEmpty();
+  req.checkBody("password", "Contraseña es un campo obligatorio").notEmpty();
+
+  const errores = req.validationErrors();
+
+  if (errores) {
+    res.render("editar-perfil", {
+      nombrePagina: "Edita tu perfil dentro de devJobs",
+      usuario: req.user,
+      nombre: req.user.nombre,
+      cerrarSesion: true,
+      mensajes: req.flash(),
+    });
+
+    return;
+  }
+
+  next();
+};
