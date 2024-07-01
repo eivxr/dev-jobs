@@ -113,7 +113,7 @@ const accionesListado = (e) => {
       }
     });
   } else {
-    if (e.target.href) {
+    if (e.target.tagName = 'A') {
       window.location.href = e.target.href;
     }
   }

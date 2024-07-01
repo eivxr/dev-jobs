@@ -70,9 +70,21 @@ exports.editarVacante = async (req, res) => {
 exports.eliminarVacante = async (req, res) => {
   const { id } = req.params;
 
-  // const vacante = await Vacante.findById(id);
+  const vacante = await Vacante.findById(id);
 
-  res.status(200).send("Vacante Eliminada Correctamente");
+  if (verificarAutor(vacante, req.user)) {
+    await Vacante.findByIdAndDelete(id);
+    res.status(200).send("Vacante eliminada correctamente");
+  } else {
+    res.status(403).send("Error");
+  }
+};
+
+const verificarAutor = (vacante = {}, usuario = {}) => {
+  if (!usuario._id.equals(vacante.autor)) {
+    return false;
+  }
+  return true;
 };
 
 //validacion y sanitizacion des los campos en vacantes
