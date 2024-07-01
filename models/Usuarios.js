@@ -20,6 +20,7 @@ const usuarioSchema = new mongoose.Schema({
   },
   token: String,
   expira: Date,
+  imagen: String
 });
 
 //hasheo de contrasenas en mongoose

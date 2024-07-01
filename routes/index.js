@@ -6,6 +6,8 @@ const vacantesController = require("../controllers/vacantesController.js");
 const usuarioController = require("../controllers/usuarioController.js");
 const authController = require("../controllers/authController.js");
 
+
+
 module.exports = () => {
   router.get("/", homeController.mostrarTrabajos);
 
@@ -72,7 +74,8 @@ module.exports = () => {
 router.post(
   "/editar-perfil",
   authController.verificarUsuario,
-  usuarioController.validarEditarPerfil,
+  // usuarioController.validarEditarPerfil,
+  usuarioController.subirImagen,
   usuarioController.editarPerfil
 );
 
