@@ -1,6 +1,10 @@
 const passport = require("passport");
 const mongoose = require("mongoose");
+const crypto = require("crypto");
+
+//models
 const Vacante = mongoose.model("Vacantes");
+const Usuario = mongoose.model("Usuarios");
 
 exports.autenticarUsuario = passport.authenticate("local", {
   successRedirect: "/administracion",
@@ -30,4 +34,36 @@ exports.mostrarPanel = async (req, res) => {
     imagen: req.user.imagen,
     cerrarSesion: true,
   });
+};
+
+exports.formReestablecerPassword = (req, res, next) => {
+  res.render("reestablecer-password", {
+    nombrePagina: "Reestablece tu contraseña",
+    tagline:
+      "Enviaremos un correo a la dirección que proporciones para que recuperes el acceso a tu cuenta",
+  });
+};
+
+exports.enviarToken = async (req, res, next) => {
+  const usuario = await Usuario.findOne({ email: req.body.email });
+
+  //verificamos que el usuario con ese correo exista en la bd
+  if (!usuario) {
+    req.flash("error", "Esta cuenta no existe");
+    return res.redirect("/iniciar-sesion");
+    
+  }
+
+  usuario.token = crypto.randomBytes(20).toString('hex'); //generamos el token para el usuario 
+  usuario.expira = Date.now() + 3600000; //configuramos el tiempo de expiracion para el token
+
+  //actualizamos el usuario en bd y generamos la url
+  await usuario.save()
+  const resetUrl = `http://${req.headers.host}/reestablecer-password/${usuario.token}`;
+
+  console.log(resetUrl);
+
+  req.flash('correcto', 'Revisa la bandeja de entrada en tu correo');
+  res.redirect('/iniciar-sesion');
+
 };

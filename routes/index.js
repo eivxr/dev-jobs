@@ -55,9 +55,13 @@ module.exports = () => {
     usuarioController.crearUsuario
   );
 
-  //formulario de sign in
+  //formulario de log in
   router.get("/iniciar-sesion", usuarioController.formIniciarSesion);
   router.post("/iniciar-sesion", authController.autenticarUsuario);
+
+  //reestablecer contrasena
+  router.get("/reestablecer-password", authController.formReestablecerPassword);
+  router.post("/reestablecer-password", authController.enviarToken);
 
   //panel de administracion
   router.get(
@@ -92,4 +96,8 @@ router.get(
 );
 
 //muestra los candidatos que una vacante tiene
-router.get('/candidatos/:id', authController.verificarUsuario, vacantesController.mostrarCandidatos)
+router.get(
+  "/candidatos/:id",
+  authController.verificarUsuario,
+  vacantesController.mostrarCandidatos
+);
