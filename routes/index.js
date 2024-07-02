@@ -6,8 +6,6 @@ const vacantesController = require("../controllers/vacantesController.js");
 const usuarioController = require("../controllers/usuarioController.js");
 const authController = require("../controllers/authController.js");
 
-
-
 module.exports = () => {
   router.get("/", homeController.mostrarTrabajos);
 
@@ -26,6 +24,13 @@ module.exports = () => {
 
   //mostrar una vacante
   router.get("/vacantes/:url", vacantesController.mostrarVacante);
+  //recibir mensajes de una vacante
+  router.post(
+    "/vacantes/:url",
+    vacantesController.subirCV,
+    vacantesController.contactarReclutador
+  );
+
   //editar una vacante
   router.get(
     "/vacantes/editar/:url",
@@ -40,7 +45,7 @@ module.exports = () => {
   );
 
   //borrar una vacante
-  router.delete('/vacantes/eliminar/:id', vacantesController.eliminarVacante)
+  router.delete("/vacantes/eliminar/:id", vacantesController.eliminarVacante);
 
   //formulario de sign up
   router.get("/crear-cuenta", usuarioController.formCrearCuenta);
@@ -80,4 +85,11 @@ router.post(
 );
 
 //cerrar sesion
-router.get('/cerrar-sesion', authController.verificarUsuario, usuarioController.cerrarSesionUsuario)
+router.get(
+  "/cerrar-sesion",
+  authController.verificarUsuario,
+  usuarioController.cerrarSesionUsuario
+);
+
+//muestra los candidatos que una vacante tiene
+router.get('/candidatos/:id', authController.verificarUsuario, vacantesController.mostrarCandidatos)

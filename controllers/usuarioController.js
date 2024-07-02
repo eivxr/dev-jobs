@@ -78,24 +78,32 @@ exports.formEditarPerfilUsuario = (req, res) => {
     nombrePagina: "Edita tu perfil dentro de devJobs",
     usuario: req.user,
     nombre: req.user.nombre,
+    imagen: req.user.imagen,
     cerrarSesion: true,
   });
 };
 
 exports.subirImagen = (req, res, next) => {
   upload(req, res, function (error) {
-    if (error instanceof multer.MulterError) {
-      req.flash("error", error.message);
-      return res.redirect("/editar-perfil");
-    } else if (error) {
-      req.flash("error", error.message);
-      return res.redirect("/editar-perfil");
+    if (error) {
+      if (error instanceof multer.MulterError) {
+        if (error.code === "LIMIT_FILE_SIZE") {
+          req.flash("error", "El archivo es muy grande: Máximo 100kb ");
+        } else {
+          req.flash("error", error.message);
+        }
+      } else {
+        req.flash("error", error.message);
+      }
+      res.redirect("/administracion");
+      return;
+    } else {
+      return next();
     }
-    next();
   });
 };
-
 const configuracionMulter = {
+  limits: { fileSize: 100000 },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, __dirname + "../../public/uploads/perfiles");
@@ -112,7 +120,6 @@ const configuracionMulter = {
       cb(new Error("Formato de archivo no válido"), false);
     }
   },
-  limits: { fileSize: 100000 },
 };
 
 const upload = multer(configuracionMulter).single("imagen");
@@ -164,6 +171,7 @@ exports.validarEditarPerfil = (req, res) => {
       nombrePagina: "Edita tu perfil dentro de devJobs",
       usuario: req.user,
       nombre: req.user.nombre,
+      imagen: req.user.imagen,
       cerrarSesion: true,
       mensajes: req.flash(),
     });
