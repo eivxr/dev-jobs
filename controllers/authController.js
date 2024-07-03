@@ -2,6 +2,8 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
+const enviarEmail = require('../handlers/email.js')
+
 //models
 const Vacante = mongoose.model("Vacantes");
 const Usuario = mongoose.model("Usuarios");
@@ -60,6 +62,15 @@ exports.enviarToken = async (req, res, next) => {
   //actualizamos el usuario en bd y generamos la url
   await usuario.save()
   const resetUrl = `http://${req.headers.host}/reestablecer-password/${usuario.token}`;
+
+  //notificacion por medio de email 
+await enviarEmail.enviar({
+  usuario,
+  subject:'Reestablecer contraseña',
+  resetUrl,
+  archivo: 'reset'
+})
+
 
   req.flash('correcto', 'Revisa la bandeja de entrada en tu correo');
   res.redirect('/iniciar-sesion');
