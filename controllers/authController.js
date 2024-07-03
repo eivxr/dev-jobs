@@ -61,9 +61,9 @@ exports.enviarToken = async (req, res, next) => {
   await usuario.save()
   const resetUrl = `http://${req.headers.host}/reestablecer-password/${usuario.token}`;
 
-  console.log(resetUrl);
-
   req.flash('correcto', 'Revisa la bandeja de entrada en tu correo');
   res.redirect('/iniciar-sesion');
+
+  
 
 };
