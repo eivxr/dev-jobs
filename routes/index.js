@@ -62,6 +62,12 @@ module.exports = () => {
   //reestablecer contrasena
   router.get("/reestablecer-password", authController.formReestablecerPassword);
   router.post("/reestablecer-password", authController.enviarToken);
+  router.get(
+    "/reestablecer-password/:token",
+    authController.reestablecerPassword
+  );
+
+  router.post('/reestablecer-password/:token', authController.guardarNuevoPassword);
 
   //panel de administracion
   router.get(
