@@ -24,22 +24,22 @@
         </h1>
         {{#if barra }}
         <div class="buscador">
-            <form action="">
-                <input type="text" class="buscar">
+            <form action="/buscador" method="post">
+                <input type="text" name="q" class="buscar">
                 <input type="submit" class="buscar">
             </form>
         </div>
         {{/if}}
 
         {{#if cerrarSesion}}
-             <div class="cerrar-sesion">
-                 <p>Hola, {{nombre}}</p>
-                 {{#if imagen}}
-                 <img src="/uploads/perfiles/{{imagen}}" class="admin-perfil" alt="">
-                 {{/if}}
-                 <a href="/administracion">Panel de administración</a>
-                 <a href="/cerrar-sesion"> Cerrar sesión</a>
-             </div>
+        <div class="cerrar-sesion">
+            <p>Hola, {{nombre}}</p>
+            {{#if imagen}}
+            <img src="/uploads/perfiles/{{imagen}}" class="admin-perfil" alt="">
+            {{/if}}
+            <a href="/administracion">Panel de administración</a>
+            <a href="/cerrar-sesion"> Cerrar sesión</a>
+        </div>
         {{/if}}
 
     </div>

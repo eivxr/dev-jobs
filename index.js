@@ -13,7 +13,7 @@ const bodyParser = require("body-parser");
 const expressValidator = require("express-validator");
 const flash = require("connect-flash");
 const passport = require("./config/passport.js");
-
+const createError = require("http-errors");
 
 require("dotenv").config({ path: "variables.env" });
 const app = express();
@@ -61,11 +61,9 @@ app.use(
   })
 );
 
-//inicializacion de passport para inicios  de sesion 
+//inicializacion de passport para inicios  de sesion
 app.use(passport.initialize());
 app.use(passport.session());
-
-
 
 //alertas y mensajes de tipo flash y creacion del middleware
 app.use(flash());
@@ -75,6 +73,20 @@ app.use((req, res, next) => {
 });
 
 app.use("/", router());
+
+//manejo de errores http 404
+app.use((req, res, next) => {
+  next(createError(404, "No encontrado"));
+});
+
+app.use((error, req, res, next) => {
+  res.locals.mensaje = error.message;
+  const status = error.status || 500;
+  res.locals.status = status;
+  res.status(status);
+
+  res.render("error");
+});
 
 app.listen(process.env.PUERTO, () => {
   console.log("Servidor iniciado en http://localhost:5001");

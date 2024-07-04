@@ -107,3 +107,6 @@ router.get(
   authController.verificarUsuario,
   vacantesController.mostrarCandidatos
 );
+
+//buscar una vacante 
+router.post('/buscador', vacantesController.buscarVacantes);
