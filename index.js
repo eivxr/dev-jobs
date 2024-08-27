@@ -15,7 +15,7 @@ const flash = require("connect-flash");
 const passport = require("./config/passport.js");
 const createError = require("http-errors");
 
-require("dotenv").config({ path: "variables.env" });
+require("dotenv").config({ path: ".env" });
 const app = express();
 
 // Habilitar body parser para la lectura de campos en formularios
